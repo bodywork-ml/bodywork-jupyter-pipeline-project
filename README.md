@@ -46,35 +46,6 @@ $ bodywork workflow \
 
 The workflow-controller logs will be streamed to your shell's standard output until the job has been successfully completed.
 
-## Testing the Model-Scoring Service
-
-Service deployments are accessible via HTTP from within the cluster - they are not exposed to the public internet. To test a service from your local machine you will first of all need to start a proxy server to enable access to your cluster. This can be achieved by issuing the following command,
-
-```shell
-$ kubectl proxy
-```
-
-Then in a new shell, you can use the curl tool to test the service. For example,
-
-```shell
-$ curl http://localhost:8001/api/v1/namespaces/ml-pipeline/services/bodywork-ml-pipeline-project--stage-2-deploy-scoring-service/proxy/iris/v1/score \
-    --request POST \
-    --header "Content-Type: application/json" \
-    --data '{"sepal_length": 5.1, "sepal_width": 3.5, "petal_length": 1.4, "petal_width": 0.2}'
-```
-
-Should return,
-
-```json
-{
-    "species_prediction":"setosa",
-    "probabilities":"setosa=1.0|versicolor=0.0|virginica=0.0",
-    "model_info": "DecisionTreeClassifier(class_weight='balanced', random_state=42)"
-}
-```
-
-According to how the payload has been defined in the `stage-2-deploy-scoring-service/serve_model.py` module.
-
 ## Running the ML Pipeline on a Schedule
 
 If you're happy with the test results, you can schedule the workflow-controller to operate remotely on the cluster on a pre-defined schedule. For example, to setup the the workflow to run every hour, use the following command,
