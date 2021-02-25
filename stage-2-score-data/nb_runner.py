@@ -73,11 +73,9 @@ def configure_logger() -> logging.Logger:
 
 
 def set_working_directory() -> None:
-    """Change working directory if running from cloned project on k8s."""
-    on_kubernetes = True if os.environ.get('KUBERNETES_SERVICE_HOST') else False
-    if on_kubernetes:
-        here = Path().cwd()
-        os.chdir(here)
+    """Switch working directory if running outside stage directory."""
+    path_to_module = Path(__file__)
+    os.chdir(path_to_module.parent)
 
 
 if __name__ == '__main__':
