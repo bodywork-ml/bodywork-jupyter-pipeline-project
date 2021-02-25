@@ -13,7 +13,7 @@ from botocore.exceptions import ClientError
 from nbconvert.preprocessors import CellExecutionError, ExecutePreprocessor
 
 AWS_S3_BUCKET = 'bodywork-jupyter-pipeline-project'
-NB_FILENAME = 'train_model.ipynb'
+NB_FILENAME = 'score_data.ipynb'
 UPLOAD_TO_AWS_S3 = True
 
 
