@@ -1,11 +1,13 @@
-# Deploy ML Pipelines on Kubernetes with Bodywork
+# Jupyter Notebook Pipelines on Kubernetes using Bodywork
 
-![bodywork](https://bodywork-media.s3.eu-west-2.amazonaws.com/ml_pipeline.png)
+![bodywork](https://bodywork-media.s3.eu-west-2.amazonaws.com/jupyter_pipelines.png)
 
-This repository contains a Bodywork project that demonstrates how to run a ML pipeline on Kubernetes (k8s), with Bodywork. The example ML pipeline has two stages:
+This repository contains a Bodywork project that demonstrates how to run a ML pipeline on Kubernetes (k8s), using Jupyter notebooks with Bodywork. The example pipeline has two stages, defined in two notebooks:
 
-1. Run a batch job to train a model.
-2. Deploy the trained model as service with a REST API.
+1. [train_model.ipynb](https://github.com/bodywork-ml/bodywork-jupyter-pipeline-project/blob/master/stage-1-train-model/train_model.ipynb) - download data from an AWS S3 bucket, train a classifier and then uploaded it back to the same S3 bucket.
+2. [score_data.ipynb](https://github.com/bodywork-ml/bodywork-jupyter-pipeline-project/blob/master/stage-2-score-data/score_data.ipynb) - download the trained model from AWS S3, together with data needs to be scored, and then score the data and upload the results back to S3.
+
+In both stages the notebooks are handled by a `nb_runner.py` module. This has been configured to save the notebooks (with all cell outputs), and to uploaded them to AWS S3 after they have finished executing. From here they can be downloaded and inspected at a later date - e.g. to see model metrics and explainability output.
 
 To run this project, follow the steps below.
 
@@ -38,7 +40,7 @@ To test the ML pipeline, using a workflow-controller running on your local machi
 ```shell
 $ bodywork workflow \
     --namespace=ml-pipeline \
-    https://github.com/bodywork-ml/bodywork-ml-pipeline-project \
+    https://github.com/bodywork-ml/bodywork-jupyter-pipeline-project \
     master
 ```
 
@@ -80,27 +82,27 @@ If you're happy with the test results, you can schedule the workflow-controller 
 ```shell
 $ bodywork cronjob create \
     --namespace=ml-pipeline \
-    --name=train-and-deploy \
+    --name=jupyter-pipeline \
     --schedule="0 * * * *" \
-    --git-repo-url=https://github.com/bodywork-ml/bodywork-ml-pipeline-project \
+    --git-repo-url=https://github.com/bodywork-ml/bodywork-jupyter-pipeline-project \
     --git-repo-branch=master
 ```
 
 Each scheduled workflow will attempt to re-run the batch-job, as defined by the state of this repository's `master` branch at the time of execution.
 
-To get the execution history for all `train-and-deploy` jobs use,
+To get the execution history for all `jupyter-pipeline` jobs use,
 
 ```shell
 $ bodywork cronjob history \
     --namespace=ml-pipeline \
-    --name=train-and-deploy
+    --name=jupyter-pipeline
 ```
 
 Which should return output along the lines of,
 
 ```text
 JOB_NAME                                START_TIME                    COMPLETION_TIME               ACTIVE      SUCCEEDED       FAILED
-train-and-deploy-1605214260             2020-11-12 20:51:04+00:00     2020-11-12 20:52:34+00:00     0           1               0
+jupyter-pipeline-1605214260             2020-11-12 20:51:04+00:00     2020-11-12 20:52:34+00:00     0           1               0
 ```
 
 Then to stream the logs from any given cronjob run (e.g. to debug and/or monitor for errors), use,
@@ -108,7 +110,7 @@ Then to stream the logs from any given cronjob run (e.g. to debug and/or monitor
 ```shell
 $ bodywork cronjob logs \
     --namespace=ml-pipeline \
-    --name=train-and-deploy-1605214260
+    --name=jupyter-pipeline-1605214260
 ```
 
 ## Cleaning Up
