@@ -3,8 +3,10 @@ This module execute a notebook that exists within the same directory,
 saves its state and then (optionally) uploads it to AWS S3.
 """
 import logging
+import os
 import sys
 from datetime import date
+from pathlib import Path
 
 import boto3 as aws
 import nbformat
@@ -70,6 +72,15 @@ def configure_logger() -> logging.Logger:
     return log
 
 
+def set_working_directory() -> None:
+    """Change working directory if running from cloned project on k8s."""
+    on_kubernetes = True if os.environ.get('KUBERNETES_HOST') else False
+    if on_kubernetes:
+        here = Path().cwd()
+        os.chdir(here)
+
+
 if __name__ == '__main__':
+    set_working_directory()
     log = configure_logger()
     main()
