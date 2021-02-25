@@ -29,7 +29,7 @@ def main():
         log.info(f'running {NB_FILENAME}')
         nb_runner.preprocess(nb, {'metadata': {'path': '.'}})
     except CellExecutionError as e:
-        log.info(f'notebook raised error: {e}')
+        log.error(f'notebook raised error: {e}')
     finally:
         datestamp = date.today().isoformat()
         updated_nb_filename = f'{NB_FILENAME.split(".")[0]}_{datestamp}.ipynb'
