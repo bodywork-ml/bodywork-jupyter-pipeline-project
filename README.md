@@ -2,7 +2,7 @@
 
 ![bodywork](https://bodywork-media.s3.eu-west-2.amazonaws.com/jupyter_pipelines.png)
 
-This repository contains a Bodywork project that demonstrates how to run a ML pipeline on Kubernetes (k8s), using Jupyter notebooks with Bodywork. The example pipeline has two stages, defined in two notebooks:
+This repository contains a Bodywork project that demonstrates how to run a ML pipeline on Kubernetes, using Jupyter notebooks with Bodywork. The example pipeline has two stages, defined in two notebooks:
 
 1. [train_model.ipynb](https://github.com/bodywork-ml/bodywork-jupyter-pipeline-project/blob/master/stage-1-train-model/train_model.ipynb) - download data from an AWS S3 bucket, train a classifier and then uploaded it back to the same S3 bucket.
 2. [score_data.ipynb](https://github.com/bodywork-ml/bodywork-jupyter-pipeline-project/blob/master/stage-2-score-data/score_data.ipynb) - download the trained model from AWS S3, together with data needs to be scored, and then score the data and upload the results back to S3.
@@ -13,7 +13,7 @@ To run this project, follow the steps below.
 
 ## Get Access to a Kubernetes Cluster
 
-In order to run this example project you will need access to a k8s cluster. To setup a single-node test cluster on your local machine you can use [minikube](https://minikube.sigs.k8s.io/docs/) or [docker-for-desktop](https://www.docker.com/products/docker-desktop). Check your access to k8s by running,
+In order to run this example project you will need access to a Kubernetes cluster. To setup a single-node test cluster on your local machine you can use [minikube](https://minikube.sigs.Kubernetes.io/docs/) or [docker-for-desktop](https://www.docker.com/products/docker-desktop). Check your access to Kubernetes by running,
 
 ```shell
 $ kubectl cluster-info
@@ -35,7 +35,7 @@ $ bodywork setup-namespace ml-pipeline
 
 ## Run the ML Pipeline
 
-To test the ML pipeline, using a workflow-controller running on your local machine and interacting with your k8s cluster, run,
+To test the ML pipeline, using a workflow-controller running on your local machine and interacting with your Kubernetes cluster, run,
 
 ```shell
 $ bodywork workflow \
