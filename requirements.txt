@@ -1,0 +1,6 @@
+boto3==1.24.13
+numpy==1.22.4
+pandas==1.4.2
+joblib==1.1.0
+scikit-learn==1.1.1
+jupyter>=1.0.0
